@@ -7,15 +7,14 @@ import org.scalatest.{FreeSpec, Matchers}
 class FileParserSpec extends FreeSpec with Matchers {
 
   def fixture = new {
-    val goodFile = new File("src/test/resources/goodTest.log")
-    val badFile = new File("src/test/resources/badTest.log")
-    val fileParser = new FileParserImpl(goodFile)
+    val goodFileParser = new FileParserImpl(new File("src/test/resources/goodTest.log"))
+    val badFileParser = new FileParserImpl(new File("src/test/resources/badTest.log"))
 
   }
 
   "on a correct file" - {
 
-    "parses whole file to list of objects" in {
+    "should parse the whole file to a list of objects" in {
 
       val l = List(
         Some(Call("A", "555-333-212", LocalTime.parse("00:02:03"))),
@@ -29,7 +28,7 @@ class FileParserSpec extends FreeSpec with Matchers {
       )
 
       val f = fixture
-      val parsedList = f.fileParser.parseFile(f.goodFile)
+      val parsedList = f.goodFileParser.parseFile
 
       parsedList shouldEqual l
     }
@@ -38,7 +37,7 @@ class FileParserSpec extends FreeSpec with Matchers {
 
   "on an incorrect file" - {
 
-    "parses well-formed lines to objects and malformed lines to none" in {
+    "should parse well-formed lines to objects and malformed lines to none" in {
 
       val l = List(
         None,
@@ -54,10 +53,9 @@ class FileParserSpec extends FreeSpec with Matchers {
 
       val f = fixture
 
-      val parsedList = f.fileParser.parseFile(f.badFile)
+      val parsedList = f.badFileParser.parseFile
 
       parsedList shouldEqual l
-
 
     }
   }

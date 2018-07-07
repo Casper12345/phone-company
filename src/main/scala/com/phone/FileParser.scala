@@ -6,7 +6,6 @@ import javax.inject.Inject
 import scala.compat.java8.StreamConverters._
 import scala.util.Try
 
-
 trait FileParser {
 
   /**
@@ -14,7 +13,7 @@ trait FileParser {
     *
     * @return a list of parsed call objects.
     */
-  def parseFile(file: File): List[Option[Call]]
+  def parseFile: List[Option[Call]]
 
 }
 
@@ -23,7 +22,7 @@ class FileParserImpl @Inject()(
                               ) extends FileParser {
 
 
-  override def parseFile(file: File): List[Option[Call]] =
+  override def parseFile: List[Option[Call]] =
     new BufferedReader(new FileReader(file)).lines().toScala[Stream].map { line =>
       val values = line.split(" ")
       if (values.length == 3) {
